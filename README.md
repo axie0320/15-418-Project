@@ -61,7 +61,7 @@ For LU Decomposition, we want to factorize our n x n matrix A into two factors L
 
 ## **Platform**
 ---
-We plan to use GHC Cluters, C++ and OpenMP for this project We can utilize its task scheduling features. 
+We plan to use GHC Cluters, C++ and OpenMP for this project. We can utilize its task scheduling features. 
 <br><br>
 
 ## **Schedule**
