@@ -36,7 +36,8 @@ For LU Decomposition, we want to factorize our n x n matrix A into two factors L
 ## **Resources**
 ---
 * Research articles: We will be referencing and studying existing research on large scale matrix inversion to identify areas of parallelization
-  * A NOTE ON PARALLEL MATRIX INVERSION: https://www.cs.utexas.edu/~flame/pubs/SIAMMatrixInversion.pdf
+  * A NOTE ON PARALLEL MATRIX INVERSION: 
+    *https://www.cs.utexas.edu/~flame/pubs/SIAMMatrixInversion.pdf
 
 <br><br>
 
