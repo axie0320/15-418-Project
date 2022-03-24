@@ -24,6 +24,7 @@ For Gauss-Jordan Elimination, the general idea is to create an augmented system 
 
 For LU Decomposition, we want to factorize our n x n matrix A into two factors L and U, where L is a lower triangular matrix and U is an upper triangular matrix. Then, we perform Gaussian elimination on L and U to find their inverse matrices. The inverted A is the product of inverted L and inverted U. 
 
+We notice that there are various interesting opportunities for parallelization in the process of matrix elimination or decomposition. First and most obvious are the low level matrix operations. We can identify independence among matrix rows, columns or cells to speed up overall computation. There are also less obvious ways of breaking down the original problem into smaller matrices and recombining them. Taking the example of LU Decomposition, certain algorithmic approaches allow us to calculate the lower and upper triangular matrices independently parallel, while other approaches allow us to operate on smaller matrices in parallel and then recombine back to lower and upper triangular matrices.
 
 <br><br>
 
