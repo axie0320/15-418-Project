@@ -40,6 +40,8 @@ For LU Decomposition, we want to factorize our n x n matrix A into two factors L
   * A Method of Ultra-Large-Scale Matrix Inversion Using Block Recursion: https://www.mdpi.com/2078-2489/11/11/523
   * A fast parallel Gauss Jordan algorithm for matrix inversion using CUDA: https://www.sciencedirect.com/science/article/pii/0167819187900317  
 
+* We will be writing code from scratch, only referencing cited research for checking theoretical understanding and correctness 
+
 <br><br>
 
 ## **Goals and Deliverables**
