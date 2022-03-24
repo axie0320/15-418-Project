@@ -35,7 +35,9 @@ For LU Decomposition, we want to factorize our n x n matrix A into two factors L
 
 ## **Resources**
 ---
+* Research articles 
 
+<br><br>
 
 ## **Goals and Deliverables**
 ---
