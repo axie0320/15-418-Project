@@ -29,7 +29,9 @@ For LU Decomposition, we want to factorize our n x n matrix A into two factors L
 
 ## **The Challenge**
 ---
+Matrix decompositions and Gaussian elimination are central operations in calculating matrix inverses. Algorithms for achieving such tasks are often highly sequential and simple parallelization might only be obvious on low level operations within them. A major challenge with further parallelizing these algorithms is identifying dependencies among operations on matrix rows and columns. In addition, recursively breaking down the matrices into smaller problem sizes does not allow easy combinations back to solve the original problem. The subproblems and process of recombining to solve the original problem also raises the challenges with distributing workload.
 
+<br><br>
 
 ## **Resources**
 ---
