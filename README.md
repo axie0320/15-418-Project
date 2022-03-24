@@ -45,6 +45,17 @@ For LU Decomposition, we want to factorize our n x n matrix A into two factors L
 <br><br>
 
 ## **Goals and Deliverables**
+* PLAN TO ACHIEVE: 
+  * We plan to finish implementing both parallel and sequential matrix inversions using LU Decomposition and Gauss-Jordan Elimination.
+  * We wish to provide performance analysis on the two different approaches and charts that illustrate performance improvements across various different workload levels and thread counts.
+
+* HOPE TO ACHIEVE:
+  * If we are ahead of schedule and complete all tasks under ‘plan to achieve’, we wish to write our own parallel implementation that can hopefully integrate the strengths of both approaches.
+
+* BACKUP PLANS: 
+  * In case we face significant obstacles and delays on our schedule, we wish to at least complete the block parallel implementation of LU Decomposition and Gauss-Jordan Elimination. Due to the constraints, we might theorize their potential performance impacts on parallel matrix inversion. We will support the theories by testing these two implementations directly instead of implementing and testing on matrix inversion. 
+
+<br><br>
 ---
 
 
