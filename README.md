@@ -36,8 +36,9 @@ For LU Decomposition, we want to factorize our n x n matrix A into two factors L
 ## **Resources**
 ---
 * Research articles: We will be referencing and studying existing research on large scale matrix inversion to identify areas of parallelization
-  * A NOTE ON PARALLEL MATRIX INVERSION: 
-    *https://www.cs.utexas.edu/~flame/pubs/SIAMMatrixInversion.pdf
+  * A NOTE ON PARALLEL MATRIX INVERSION: https://www.cs.utexas.edu/~flame/pubs/SIAMMatrixInversion.pdf
+  * A Method of Ultra-Large-Scale Matrix Inversion Using Block Recursion: https://www.mdpi.com/2078-2489/11/11/523
+  * A fast parallel Gauss Jordan algorithm for matrix inversion using CUDA: https://www.sciencedirect.com/science/article/pii/0167819187900317  
 
 <br><br>
 
