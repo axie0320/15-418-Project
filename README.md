@@ -9,12 +9,16 @@ by Allen Xie and Chi Nguyen
 <br><br>
 
 ## **Summary**
+We are going to create and optimize parallel implementations of matrix inversion. We plan on parallelizing key matrix decomposition/eliminations algorithms that will ultimately allow us to parallelize matrix inversion. 
+
+<br><br>
 ---
 The goal of this project is to parallelize various implementaitons of inversing a matrix and analyze their performance trade-offs. There are two approaches of interest we will specifically focus on: matrix inversion through LU Decomposition and Gauss-Jordan Elimination. 
 <br><br>
 
 ## **Background**
 ---
+
 
 
 ## **The Challenge**
