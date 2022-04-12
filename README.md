@@ -68,3 +68,14 @@ Proposed schedule:
 
 ## **Milestone Report**
 ---
+
+<p>We were able to complete the initial sequential and parallel implementation of matrix inverse with Gauss-Jordan method. For the initial Gauss-Jordan implementations, we were able to parallelize most of the computation, achieving a work of O(n^3) and span of O(n). However, we noticed that most of the speedup comes from parallelizing low-level matrix operations/computations, which limits the efficiencies when inversing extremely large matrices. We believe such problems can be addressed using a block recursive method. This aligns with the research direction from our original plan and is something we are currently working on.</p>
+
+<p>With respect to the goals and deliverables from the proposal, we are on track for most of our goals. The only area we are slightly behind on implementing is writing robust testing code. We plan on prioritizing this area in the upcoming week as we move closer to performance analysis in the later weeks.</p>
+
+<p>Our current plan for the poster session will be a collection of statistical graphs alongside detailed analysis. From our work at the moment, we believe the info will focus mostly on comparing parallelization implementations within each algorithmic approach as well as contrasting the two approaches. </p>
+
+<p>The main concern we face at the moment is primarily coding. There were some challenges with understanding existing research around the topic of our interest, but fortunately, as we started working on our parallelizations, we understood a lot of the research better. </p>
+
+<br><img src=".\docs\images\schedule_detailed.jpg" width='500px'></img>  
+<br><br>
