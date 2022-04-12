@@ -64,3 +64,7 @@ We plan to use GHC Cluters, C++ and OpenMP for this project. Becauese potential 
 ---
 Proposed schedule:
 <br><img src=".\docs\images\schedule_draft.jpg" width='500px'></img>  
+<br><br>
+
+## **Milestone Report**
+---
