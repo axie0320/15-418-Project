@@ -6,7 +6,7 @@
 #include <string>
 using namespace std;
 
-#define N 512					//size of the matrix 
+#define N 16					//size of the matrix 
 #define bsize 8					//size of each block in the matrix 
 #define numBlocks N/bsize
 

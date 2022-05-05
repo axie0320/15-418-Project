@@ -8,6 +8,7 @@
 using namespace std;
 
 #define N 4
+#define threshold 4
 
 static int _argc;
 static const char **_argv;
@@ -147,6 +148,29 @@ void gauss_jordan(double *mat, double *res, int dim) {
             }
         }
     }
+}
+
+
+void block_inversion_GJ(double *mat, double *res, int dim) {
+    if (dim <= threshold) {
+        gauss_jordan(mat, res, dim);
+    }
+
+    //    [ A  B ]
+    //    [ C  D ]
+
+    // Submatrix A must be invertible square
+
+    int dim_A = dim/2;
+
+    double A[dim_A * dim_A];
+    double B[dim_A * (dim - dim_A)];
+    double C[dim_A * (dim - dim_A)];
+    double D[(dim - dim_A) * (dim - dim_A)];
+
+    double AI[dim_A * dim_A];
+    double D-CAIB[(dim - dim_A) * (dim - dim_A)];
+
 }
 
 int main(int argc, const char *argv[]) {
