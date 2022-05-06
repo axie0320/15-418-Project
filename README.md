@@ -35,7 +35,6 @@ Research articles: We will be referencing and studying existing research on larg
 
   * <a href="https://www.cs.utexas.edu/~flame/pubs/SIAMMatrixInversion.pdf">A Note On Parallel Matrix Inversion</a>
   * <a href="https://www.mdpi.com/2078-2489/11/11/523">A Method of Ultra-Large-Scale Matrix Inversion Using Block Recursion</a>
-  * <a href="https://www.sciencedirect.com/science/article/pii/0167819187900317">A fast parallel Gauss Jordan algorithm for matrix inversion using CUDA</a>
 
 We will be writing code from scratch, only referencing cited research for checking theoretical understanding and correctness 
 <br><br>
