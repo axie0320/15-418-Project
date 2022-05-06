@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <cstring>
+#include <string.h>
 #include <chrono>
 
 #include <utility>
 #include <string>
 #include <omp.h>
-
 using namespace std;
 
 static int _argc;
@@ -177,7 +176,7 @@ void invertLower (double *L, int dim) {
 }
 
 /* M1 is of size dim1 x dim2 */
-void matrixMultiplication (double *result, double *M1, double *M2, dim1, dim2, dim3) {
+void matrixMultiplication (double *result, double *M1, double *M2, int dim1, int dim2, int dim3) {
 	for (int i = 0; i < dim1; i++) {
 		for (int j = 0; j < dim2; j++) {
 			for (int p = 0; p < dim3; p++) {
@@ -187,17 +186,17 @@ void matrixMultiplication (double *result, double *M1, double *M2, dim1, dim2, d
 	}
 }
 
-void matrixAddition (double *result, double *M1, double *M2, dimX, dimY) {
+void matrixAddition (double *result, double *M1, double *M2, int dimX, int dimY) {
 	#pragma omp parallel shared (result, M1, M2) private (i, j)
 	#pragma omp for 
-	for (int i = 0; i < dimY; i++) {
-		for (int j = 0; j < dimX; j++) {
-			result[i * dim + j] = M1[i * dim + j] + M2[i * dim + j];
+	for (int i = 0; i < dimX; i++) {
+		for (int j = 0; j < dimY; j++) {
+			result[i * dimY + j] = M1[i * dimY + j] + M2[i * dimY + j];
 		}	
 	}
 }
 
-void matrixSubtraction (double *result, double *M1, double *M2, dimX, dimY) {
+void matrixSubtraction (double *result, double *M1, double *M2, int dimX, int dimY) {
 	#pragma omp parallel shared (result, M1, M2) private (i, j)
 	#pragma omp parallel for
 	for (int i = 0; i < dimY; i++) {
@@ -207,7 +206,7 @@ void matrixSubtraction (double *result, double *M1, double *M2, dimX, dimY) {
 	}
 }
 
-void integerMultiplication (double *result, double *M, int num, dimX, dimY) {
+void integerMultiplication (double *result, double *M, int num, int dimX, int dimY) {
 	#pragma omp parallel shared (result, M) private (i, j)
 	#pragma omp parallel for 
 	for (int i = 0; i < dimY; i ++){
@@ -218,7 +217,7 @@ void integerMultiplication (double *result, double *M, int num, dimX, dimY) {
 
 }
 
-void copyMatrix (double *result, double *source, int x1, int y1, int x2, int y2, dimX, dimY) {
+void copyMatrix (double *result, double *source, int x1, int y1, int x2, int y2, int dimX, int dimY) {
 	#pragma omp parallel for 
 	for (int i = x1; i < x2; i++) {
 		for (int j = y1; j < y2; j++) {
@@ -301,7 +300,7 @@ void recursiveBlockwiseInversion (double *M, int dim) {
 	double temp3[q * p];
 	matrixMultiplication(temp3, C, A, q, p, p);    	// Calculate CA^(-1)
 
-	matrixMultiplication(C, S, temp3, q, p, q)      // -C = N^(-1)CA^(-1)
+	matrixMultiplication(C, S, temp3, q, p, q);     // -C = N^(-1)CA^(-1)
 	double temp4[p * p];
 	matrixMultiplication(temp4, B, C, p, p, q);		// temp4 = BN^(-1)CA^(-1)
 	integerMultiplication(C, C, -1, q, p); 			// final C
@@ -320,9 +319,9 @@ void recursiveBlockwiseInversion (double *M, int dim) {
 		for (int j = 0; j < dim; j++) {
 			if (i < p && j < p) {
 				M[i * dim + j] = A[i * dim + j];
-			} else (i < p) {
-				M[i * dim = j] = C[i * dim + j];
-			} else (i >= p && j < p) {
+			} else if (i < p) {
+				M[i * dim + j] = C[i * dim + j];
+			} else if (i >= p && j < p) {
 				M[i * dim + j] = B[i * dim + j];
 			} else {
 				M[i * dim + j] = D[i * dim + j];
@@ -359,5 +358,3 @@ int main(int argc, const char *argv[]) {
 
     return 0;
 }
-
-
