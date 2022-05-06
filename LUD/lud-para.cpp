@@ -9,6 +9,49 @@
 
 using namespace std;
 
+static int _argc;
+static const char **_argv;
+
+const char *get_option_string(const char *option_name, const char *default_value) {
+    for (int i = _argc - 2; i >= 0; i -= 2)
+        if (strcmp(_argv[i], option_name) == 0)
+            return _argv[i + 1];
+    return default_value;
+}
+
+int get_option_int(const char *option_name, int default_value) {
+    for (int i = _argc - 2; i >= 0; i -= 2)
+        if (strcmp(_argv[i], option_name) == 0)
+            return atoi(_argv[i + 1]);
+    return default_value;
+}
+
+double get_option_double(const char *option_name, double default_value) {
+    for (int i = _argc - 2; i >= 0; i -= 2)
+        if (strcmp(_argv[i], option_name) == 0)
+            return (double)atof(_argv[i + 1]);
+    return default_value;
+}
+
+
+void print_matrix(double *mat, int dim) {
+    for (int i = 0; i < dim; i++) {
+        for (int j = 0; j < dim; j++) {
+            printf("%.4f\t", mat[i * dim + j]);
+        }
+        printf("\n");
+    }
+}
+
+void generate_matrix(double *mat, int dim){
+	for (int i = 0; i < dim; i++) {
+		for (int j = 0; j < dim; j++) {
+			mat[(i * dim) + j] = rand() % 10 + 2;
+		}
+	}
+}
+
+
 /* Parallelize Matrix Inversion using LU decomposition method */
 
 /* List of assumptions we made here:
@@ -176,6 +219,12 @@ void integerMultiplication (double *result, double *M, int num, dimX, dimY) {
 }
 
 void copyMatrix (double *result, double *source, int x1, int y1, int x2, int y2, dimX, dimY) {
+	#pragma omp parallel for 
+	for (int i = x1; i < x2; i++) {
+		for (int j = y1; j < y2; j++) {
+			result[(i - x1) * dimY + (j - y1)] = source[i * dimY + j]; 
+		}
+	}
 
 }
 
@@ -229,10 +278,10 @@ void recursiveBlockwiseInversion (double *M, int dim) {
  	double C[q * p];
  	double D[q * q];
 
-	copyMatrix(A, M, 0, 0, p, p);
-	copyMatrix(B, M, p, 0, dim, p);
-	copyMatrix(C, M, 0, p, p, dim);
-	copyMatrix(D, M, p, p, dim, dim);
+	copyMatrix(A, M, 0, 0, p, p, p, p);
+	copyMatrix(B, M, p, 0, dim, p, p, q);
+	copyMatrix(C, M, 0, p, p, dim, q, p);
+	copyMatrix(D, M, p, p, dim, dim, q, q);
 
 	recursiveBlockwiseInversion(A, p);	// A now stores the inverted version of original A
 
@@ -280,13 +329,35 @@ void recursiveBlockwiseInversion (double *M, int dim) {
 			}
 		}
 	}
-
 }
 
-int main () {
+int main(int argc, const char *argv[]) {
+
+    _argc = argc - 1;
+    _argv = argv + 1;
 
 
+    int dim = get_option_int("-d", 4);
 
+    double A[dim * dim];
+
+   	double L[dim * dim];
+   	double U[dim * dim];
+
+    generate_matrix(A, dim);
+
+    print_matrix(A, dim);
+
+    
+    lu_d(A, L, U, dim);
+    printf("\n");
+    print_matrix(L, dim);
+    printf("\n");
+    print_matrix(U, dim);
+    printf("\n");
+    print_matrix(A, dim);
+
+    return 0;
 }
 
 
