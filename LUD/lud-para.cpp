@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <chrono>
+#include <time.h>
 
 #include <utility>
 #include <string>
@@ -79,6 +80,10 @@ double U[N * N];
 
 void lu_d(double *M, double *L, double *U, int dim) {
     // iterate across column
+
+    clock_t t1, t2;
+    printf("Timer starts\n");
+    t1 = clock();
     #pragma omp parallel for 
     for (int i = 0; i < dim; i++) {
         // iterate across row 
@@ -104,6 +109,11 @@ void lu_d(double *M, double *L, double *U, int dim) {
             } 
         }
     }
+    t2 = clock();
+    printf("Timer ends\n");
+    double time_taken = ((double)(t2 - t1))/CLOCKS_PER_SEC;
+    printf("lu_d took %f seconds to execute", time_taken);
+
 }
 
 void write_identity(double *a, int dim) {
@@ -187,7 +197,6 @@ void matrixMultiplication (double *result, double *M1, double *M2, int dim1, int
 }
 
 void matrixAddition (double *result, double *M1, double *M2, int dimX, int dimY) {
-	#pragma omp parallel shared (result, M1, M2) private (i, j)
 	#pragma omp for 
 	for (int i = 0; i < dimX; i++) {
 		for (int j = 0; j < dimY; j++) {
@@ -197,7 +206,6 @@ void matrixAddition (double *result, double *M1, double *M2, int dimX, int dimY)
 }
 
 void matrixSubtraction (double *result, double *M1, double *M2, int dimX, int dimY) {
-	#pragma omp parallel shared (result, M1, M2) private (i, j)
 	#pragma omp parallel for
 	for (int i = 0; i < dimY; i++) {
 		for (int j = 0; j < dimX; j++) {
@@ -207,7 +215,6 @@ void matrixSubtraction (double *result, double *M1, double *M2, int dimX, int di
 }
 
 void integerMultiplication (double *result, double *M, int num, int dimX, int dimY) {
-	#pragma omp parallel shared (result, M) private (i, j)
 	#pragma omp parallel for 
 	for (int i = 0; i < dimY; i ++){
 		for (int j = 0; j < dimX; j++) {
