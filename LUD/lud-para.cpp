@@ -12,6 +12,7 @@ using namespace std;
 static int _argc;
 static const char **_argv;
 
+
 const char *get_option_string(const char *option_name, const char *default_value) {
     for (int i = _argc - 2; i >= 0; i -= 2)
         if (strcmp(_argv[i], option_name) == 0)
@@ -84,9 +85,10 @@ void lu_d(double *M, double *L, double *U, int dim) {
     clock_t t1, t2;
     printf("Timer starts\n");
     t1 = clock();
-    #pragma omp parallel for 
+    #pragma omp parallel for num_threads(4) 
     for (int i = 0; i < dim; i++) {
         // iterate across row 
+        #pragma omp for schedule(static);
         for (int j = 0; j < dim; j++) {
             // Lower Triangular Matrix
             L[j*dim + i] = j < i ? 0 : M[j*dim + i];
@@ -95,6 +97,7 @@ void lu_d(double *M, double *L, double *U, int dim) {
             }
         }
         // iterate across row 
+        #pragma omp for schedule(static)
         for (int j = 0; j < dim; j++) {
             // Upper Triangular Matrix
             if (j == i) {
@@ -117,7 +120,7 @@ void lu_d(double *M, double *L, double *U, int dim) {
 }
 
 void write_identity(double *a, int dim) {
-    #pragma omp parallel for
+    #pragma omp parallel for num_threads(4)
     for (int i = 0; i < dim; i++) {
         a[i*dim + i] = 1;
     }
@@ -145,7 +148,7 @@ void invertUpper (double *U, int dim) {
 	}
 
 	// copy everything over to U
-	#pragma omp parallel for 
+	#pragma omp parallel for num_threads(4)
 	for (int k = 0; k < dim; k ++) {
 		for (int z = k; z < dim; z++) {
 			U[k * dim + z] = I[k * dim + z];
@@ -176,7 +179,7 @@ void invertLower (double *L, int dim) {
 		}
 	}
 
-	#pragma omp parallel for
+	#pragma omp parallel for num_threads(4)
 	// copy everything over to L
 	for (int k = 0; k < dim; k ++) {
 		for (int z = k; z < dim; z++) {
@@ -187,6 +190,7 @@ void invertLower (double *L, int dim) {
 
 /* M1 is of size dim1 x dim2 */
 void matrixMultiplication (double *result, double *M1, double *M2, int dim1, int dim2, int dim3) {
+	#pragma omp parallel for num_threads(4);
 	for (int i = 0; i < dim1; i++) {
 		for (int j = 0; j < dim2; j++) {
 			for (int p = 0; p < dim3; p++) {
@@ -197,7 +201,7 @@ void matrixMultiplication (double *result, double *M1, double *M2, int dim1, int
 }
 
 void matrixAddition (double *result, double *M1, double *M2, int dimX, int dimY) {
-	#pragma omp for 
+	#pragma omp parallel for num_threads(4);
 	for (int i = 0; i < dimX; i++) {
 		for (int j = 0; j < dimY; j++) {
 			result[i * dimY + j] = M1[i * dimY + j] + M2[i * dimY + j];
@@ -206,7 +210,7 @@ void matrixAddition (double *result, double *M1, double *M2, int dimX, int dimY)
 }
 
 void matrixSubtraction (double *result, double *M1, double *M2, int dimX, int dimY) {
-	#pragma omp parallel for
+	#pragma omp parallel for num_threads(4)
 	for (int i = 0; i < dimY; i++) {
 		for (int j = 0; j < dimX; j++) {
 			result[i * dimY + j] = M1[i * dimY + j] - M2[i * dimY + j];
@@ -215,7 +219,7 @@ void matrixSubtraction (double *result, double *M1, double *M2, int dimX, int di
 }
 
 void integerMultiplication (double *result, double *M, int num, int dimX, int dimY) {
-	#pragma omp parallel for 
+	#pragma omp parallel for num_threads(4)
 	for (int i = 0; i < dimY; i ++){
 		for (int j = 0; j < dimX; j++) {
 			result[i * dimY + j] = M[i * dimY + j] * num;
@@ -225,7 +229,7 @@ void integerMultiplication (double *result, double *M, int num, int dimX, int di
 }
 
 void copyMatrix (double *result, double *source, int x1, int y1, int x2, int y2, int dimX, int dimY) {
-	#pragma omp parallel for 
+	#pragma omp parallel for num_threads(4)
 	for (int i = x1; i < x2; i++) {
 		for (int j = y1; j < y2; j++) {
 			result[(i - x1) * dimY + (j - y1)] = source[i * dimY + j]; 
@@ -322,6 +326,7 @@ void recursiveBlockwiseInversion (double *M, int dim) {
 
 
 	// copy the inversion of M into M
+	#pragma omp parallel for num_threads(4);
 	for (int i = 0; i < dim; i++) {
 		for (int j = 0; j < dim; j++) {
 			if (i < p && j < p) {
