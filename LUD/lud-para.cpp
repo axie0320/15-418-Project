@@ -9,8 +9,7 @@
 
 using namespace std;
 
-/* Parallelize Matrix Inversion using LU decomposition method
- * Chi Nguyen */
+/* Parallelize Matrix Inversion using LU decomposition method */
 
 /* List of assumptions we made here:
  1. Dimension of matrix is greater than or equal to 2 
@@ -22,7 +21,7 @@ void lu_d (double *M, double *L, double *U, int dim);
 void invertUpper (double *U, int dim);
 void invertLower (double *L, int dim);
 void invertMatrix (double *M, int dim);
-void blockwiseLU (double *M, double *L, double *U, int dim);
+void recursiveBlockwiseInversion (double *M, int dim);
 
 
 #define N 16					//size of the matrix 
@@ -38,6 +37,7 @@ double U[N * N];
 
 void lu_d(double *M, double *L, double *U, int dim) {
     // iterate across column
+    #pragma omp parallel for 
     for (int i = 0; i < dim; i++) {
         // iterate across row 
         for (int j = 0; j < dim; j++) {
@@ -81,7 +81,7 @@ void invertUpper (double *U, int dim) {
 	double I[dim  * dim];
 	write_identity(I, dim);
 
-	// Iterate across columns
+	// Iterate across columns 
 	for (int i = dim; i > 0; i--) {
 		I[i * dim - 1] /= U[i * dim - 1];
 		U[i * dim - 1] = 1;
@@ -93,6 +93,7 @@ void invertUpper (double *U, int dim) {
 	}
 
 	// copy everything over to U
+	#pragma omp parallel for 
 	for (int k = 0; k < dim; k ++) {
 		for (int z = k; z < dim; z++) {
 			U[k * dim + z] = I[k * dim + z];
@@ -123,6 +124,7 @@ void invertLower (double *L, int dim) {
 		}
 	}
 
+	#pragma omp parallel for
 	// copy everything over to L
 	for (int k = 0; k < dim; k ++) {
 		for (int z = k; z < dim; z++) {
@@ -143,6 +145,8 @@ void matrixMultiplication (double *result, double *M1, double *M2, dim1, dim2, d
 }
 
 void matrixAddition (double *result, double *M1, double *M2, dimX, dimY) {
+	#pragma omp parallel shared (result, M1, M2) private (i, j)
+	#pragma omp for 
 	for (int i = 0; i < dimY; i++) {
 		for (int j = 0; j < dimX; j++) {
 			result[i * dim + j] = M1[i * dim + j] + M2[i * dim + j];
@@ -151,6 +155,8 @@ void matrixAddition (double *result, double *M1, double *M2, dimX, dimY) {
 }
 
 void matrixSubtraction (double *result, double *M1, double *M2, dimX, dimY) {
+	#pragma omp parallel shared (result, M1, M2) private (i, j)
+	#pragma omp parallel for
 	for (int i = 0; i < dimY; i++) {
 		for (int j = 0; j < dimX; j++) {
 			result[i * dimY + j] = M1[i * dimY + j] - M2[i * dimY + j];
@@ -159,6 +165,8 @@ void matrixSubtraction (double *result, double *M1, double *M2, dimX, dimY) {
 }
 
 void integerMultiplication (double *result, double *M, int num, dimX, dimY) {
+	#pragma omp parallel shared (result, M) private (i, j)
+	#pragma omp parallel for 
 	for (int i = 0; i < dimY; i ++){
 		for (int j = 0; j < dimX; j++) {
 			result[i * dimY + j] = M[i * dimY + j] * num;
@@ -280,3 +288,5 @@ int main () {
 
 
 }
+
+
