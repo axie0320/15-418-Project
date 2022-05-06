@@ -78,3 +78,10 @@ Proposed schedule:
 
 <br><img src=".\docs\images\schedule_detailed.jpg" width='500px'></img>  
 <br><br>
+
+## **Final Presentation**
+
+Link to our final presentation: https://drive.google.com/file/d/1h5YNGatdl_svlZcG2Q0f8wFho5MBOjEW/view?usp=sharing
+
+<br><br>
+---
